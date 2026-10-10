@@ -15,6 +15,7 @@ API_KEY = os.getenv("AVIATIONSTACK_API_KEY")
 
 # Default origin when user says only destination, e.g "Japan Trip"
 DEFAULT_ORIGIN_IATA = os.getenv("DEFAULT_ORIGIN_IATA","HYD")
+BASE_URL = "https://api.aviationstack.com/v1/flights"
 
 AIRPORTS = airportsdata.load("IATA")
 
@@ -112,16 +113,24 @@ CITY_MAIN_AIRPORT = {
 
 
 def clean_text(text: str) -> str:
-    text = text.lower().split()
+    # Ensure input is a string
+    text = str(text).lower()
+
+    # Remove punctuation and special characters
     text = re.sub(r"[^a-z0-9\s]", " ", text)
-    text = re.sub(r"\s+"," ",text)
+
+    # Normalize whitespace
+    text = re.sub(r"\s+", " ", text).strip()
+
     stop_words = [
         "flight", "flights", "ticket", "tickets", "trip", "travel",
         "plan", "complete", "days", "day", "including", "hotel",
         "hotels", "sightseeing", "under", "budget", "info", "information"
     ]
-    words = [w for w in text.split() if w not in stop_words]
-    return " ".join(words).strip()
+
+    words = [word for word in text.split() if word not in stop_words]
+
+    return " ".join(words)
 
 def country_name_to_code(text: str):
     text = clean_text(text)
