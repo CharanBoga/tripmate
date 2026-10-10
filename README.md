@@ -1,4 +1,4 @@
-# tripmate
+# TripMate - End-to-End: Multi-Agent Travel Planner with Groq, LangGraph, PostgreSQL & FastAPI
 
 
 ## How to run?
